@@ -1,6 +1,7 @@
 # GetGo
 go go go
 
+# Go 1.11 以及之前版本的环境配置
 ## 一. 环境配置(Mac)
 1. 终端, cd ~
 2. 查看是否存在.bash_profile文件, ls -all
@@ -41,3 +42,17 @@ go go go
    go build -v .
    ```
 
+
+# Go 1.12 开始已不再推荐使用GOPATH来构建应用了
+
+## go mod 使用
+1. go mod init 'name' -> 生成 go.mod
+   cat go.mod -> 查看 go.mod 内容
+   
+
+## 常用 go 第三方库记录
+1. [cobra](https://github.com/spf13/cobra)是一个命令行程序库
+
+2. [viper](https://github.com/spf13/viper)是一个配置解决方案，拥有丰富的特性
+
+3. pflag 是命令行参数解析包 pflag, pflag 包的设计目的就是替代标准库中的 flag 包，因此它具有更强大的功能并且与标准的兼容性更好

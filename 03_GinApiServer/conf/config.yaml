@@ -1,0 +1,5 @@
+runmode: debug # 开发模式, debug, release, test
+addr: :8080 # HTTP绑定端口
+name: apiserver # API Server name
+url: http://127.0.0.1:8080 # ip:port
+max_ping_count: 12 # pingServer 函数try的次数
