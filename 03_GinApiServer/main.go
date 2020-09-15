@@ -22,6 +22,7 @@ func main() {
 	pflag.Parse()
 
 	// init config
+	// 增加了 config.Init(*cfg) 调用，用来初始化配置
 	if err := config.Init(*cfg); err != nil {
 		// panic内置函数停止当前goroutine的正常执行
 		panic(err)
