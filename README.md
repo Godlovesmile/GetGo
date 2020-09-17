@@ -60,3 +60,10 @@ go go go
 ## 开发过程遇到问题
 1. go 版本升级后, vscode-go 的代码自动补全功能坏了
    解决办法是重新安装 vscode-go 所依赖的 tools; cmd + shift + p -> Go: Install/Update Tools
+
+## 数据库
+1. Go中支持MySQL的驱动目前比较多, [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql), 驱动比较新，维护的比较好, 推荐使用
+
+2. [卸载安装的mysql](https://www.jianshu.com/p/ef58fb333cd6)
+
+3. [CentOS 7安装MySQL8.0](https://www.jianshu.com/p/224a891932d8)
