@@ -32,6 +32,7 @@ func main() {
 
 	// Create the Gin engine.
 	g := gin.New()
+	g.GET()
 
 	middlewares := []gin.HandlerFunc{}
 
