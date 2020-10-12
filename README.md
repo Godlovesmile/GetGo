@@ -57,6 +57,8 @@ go go go
 
 3. pflag 是命令行参数解析包 pflag, pflag 包的设计目的就是替代标准库中的 flag 包，因此它具有更强大的功能并且与标准的兼容性更好
 
+4. [go-simplejson](https://github.com/bitly/go-simplejson)是处理json数据
+
 ## 开发过程遇到问题
 1. go 版本升级后, vscode-go 的代码自动补全功能坏了
    解决办法是重新安装 vscode-go 所依赖的 tools; cmd + shift + p -> Go: Install/Update Tools

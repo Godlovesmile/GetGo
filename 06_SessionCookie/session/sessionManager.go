@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"sync"
+	"time"
 )
 
 // Provider handler: session是保存在服务器端的数据，它可以以任何的方式存储，比如存储在内存、数据库或者文件中。因此我们抽象出一个Provider接口，用以表征session管理器底层存储结构
@@ -86,5 +87,22 @@ func (manager *Manager) SessionStart(w http.ResponseWriter, r *http.Request) (se
 
 // SessionDestroy Destroy
 func (manager *Manager) SessionDestroy(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie(manager.cookieName)
+	if err != nil || cookie.Value == "" {
+		return
+	}
+	manager.lock.Lock()
+	defer manager.lock.Unlock()
+	manager.provider.SessionDestroy(cookie.Value)
+	expiration := time.Now()
+	tempCookie := http.Cookie{Name: manager.cookieName, Path: "/", HttpOnly: true, Expires: expiration, MaxAge: -1}
+	http.SetCookie(w, &tempCookie)
+}
 
+// GC set
+func (manager *Manager) GC() {
+	manager.lock.Lock()
+	defer manager.lock.Unlock()
+	manager.provider.SessionGC(manager.maxlifetime)
+	time.AfterFunc(time.Duration(manager.maxlifetime)*time.Second, func() { manager.GC() })
 }
