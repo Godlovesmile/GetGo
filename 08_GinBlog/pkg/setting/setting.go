@@ -27,6 +27,14 @@ var (
 	JwtSecret string
 )
 
+// App info
+type App struct {
+	PageSize int
+}
+
+// AppSetting info
+var AppSetting = &App{}
+
 func init() {
 	var err error
 	Cfg, err = ini.Load("conf/app.ini")
