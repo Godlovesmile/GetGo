@@ -17,6 +17,14 @@ go go go
    + 编译.bansh_profile文件, source .bash_peofile
 4. 查看Go环境变量: go env
 
+5. 在 vscode 中, go 相关插件安装失败
+使用 go mode 代理安装
+# 新版改成如下链接
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://proxy.golang.com.cn,direct
+
+
+
 ## 二. 代码运行
 1. 在go的环境中创建保存项目的文件夹
 
