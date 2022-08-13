@@ -6,5 +6,8 @@
         "*.ttss": "css",
         "*.ts": "typescript",
         "*.ttml": "xml"
-    }
+    },
+    "gopls": {
+        "experimentalWorkspaceModule": true
+    },
 }
