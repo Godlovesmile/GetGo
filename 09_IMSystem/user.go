@@ -39,7 +39,17 @@ func (user *User) UserOffline() {
 
 // 用户发消息
 func (user *User) UserMsg(msg string) {
-	user.server.BroadCast(user, msg)
+	// 特殊指令, 查询当前所有用户
+	if msg == "who" {
+		user.server.mapLock.Lock()
+		for _, itemUser := range user.server.OnlineMap {
+			onlineMsg := "[" + itemUser.Name + "]" + ":" + "online...\n"
+			user.conn.Write([]byte(onlineMsg))
+		}
+		user.server.mapLock.Unlock()
+	} else {
+		user.server.BroadCast(user, msg)
+	}
 }
 
 // 创建一个用户 api
