@@ -5,6 +5,7 @@ import (
 	"io"
 	"net"
 	"sync"
+	"time"
 )
 
 type Server struct {
@@ -61,6 +62,9 @@ func (server *Server) Handler(conn net.Conn) {
 	// 用户上线, 存入 onlineMap
 	user.UserOnline()
 
+	// 监听用户是否发送消息
+	isLive := make(chan bool)
+
 	// 接受客户端用户发送消息
 	go func() {
 		buf := make([]byte, 4096)
@@ -84,11 +88,26 @@ func (server *Server) Handler(conn net.Conn) {
 			msg := string(buf[:n-1])
 			// 广播消息
 			user.UserMsg(msg)
+
+			isLive <- true
 		}
 	}()
 
 	// 当前 handler 阻塞
-	select {}
+	for {
+		select {
+		case <-isLive:
+			// 重置下面定时器
+		case <-time.After(time.Second * 10):
+			// 用户超时, 进行强制剔除
+			user.UserMsg("ti chu")
+			user.UserOffline()
+			close(user.C)
+			// conn.Close()
+
+			return
+		}
+	}
 }
 
 // 启动服务接口
