@@ -2,6 +2,7 @@ package main
 
 import (
 	"net"
+	"strings"
 )
 
 type User struct {
@@ -57,6 +58,11 @@ func (user *User) UserOffline() {
 	user.UserMsg("xia xian")
 }
 
+// 消息发送写入处理
+func (user *User) SendMsg(msg string) {
+	user.conn.Write([]byte(msg))
+}
+
 // 用户发消息
 func (user *User) UserMsg(msg string) {
 	// 特殊指令, 查询当前所有用户
@@ -64,9 +70,36 @@ func (user *User) UserMsg(msg string) {
 		user.server.mapLock.Lock()
 		for _, itemUser := range user.server.OnlineMap {
 			onlineMsg := "[" + itemUser.Name + "]" + ":" + "online...\n"
-			user.conn.Write([]byte(onlineMsg))
+			user.SendMsg(onlineMsg)
 		}
 		user.server.mapLock.Unlock()
+	} else if len(msg) > 4 && msg[:3] == "to|" {
+		// 消息格式: to|张三|msg
+		// 1. 获取对方的用户名
+		remoteName := strings.Split(msg, "|")[1]
+
+		if remoteName == "" {
+			user.SendMsg("ge shi err \n")
+			return
+		}
+
+		// 2. 根据用户名, 得到对方 User 对象
+		remoteUser, ok := user.server.OnlineMap[remoteName]
+
+		if !ok {
+			user.SendMsg("user is no \n")
+			return
+		}
+
+		// 3. 发送消息
+		content := strings.Split(msg, "|")[2]
+
+		if content == "" {
+			user.SendMsg("no msg, again send")
+			return
+		}
+
+		remoteUser.SendMsg(user.Name + "say:" + content)
 	} else {
 		user.server.BroadCast(user, msg)
 	}

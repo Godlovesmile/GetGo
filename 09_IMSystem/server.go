@@ -98,7 +98,7 @@ func (server *Server) Handler(conn net.Conn) {
 		select {
 		case <-isLive:
 			// 重置下面定时器
-		case <-time.After(time.Second * 10):
+		case <-time.After(time.Second * 4000):
 			// 用户超时, 进行强制剔除
 			user.UserMsg("ti chu")
 			user.UserOffline()
